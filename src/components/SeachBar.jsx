@@ -6,8 +6,14 @@ import { FaMagnifyingGlass } from 'react-icons/fa6'
 
 export default function SearchBar({ setData, setCurrentWeather }) {
     const [location, setLocation] = useState('')
+    const apiKey = process.env.REACT_APP_WEATHER_API_KEY
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${import.meta.env.VITE_api_Key}&units=metric`
+    if (!apiKey) {
+        console.error('Please provide a valid API key')
+        return null;
+    }
+
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`
 
     const searchLocation = () => {
         axios.get(url).then((response) => {
