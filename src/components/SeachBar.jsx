@@ -6,7 +6,7 @@ import { FaMagnifyingGlass } from 'react-icons/fa6'
 
 export default function SearchBar({ setData, setCurrentWeather }) {
     const [location, setLocation] = useState('')
-    const apiKey = process.env.REACT_APP_WEATHER_API_KEY
+    const apiKey = "REACT_APP_WEATHER_API_KEY_PLACEHOLDER"
 
     if (!apiKey) {
         console.error('Please provide a valid API key')
