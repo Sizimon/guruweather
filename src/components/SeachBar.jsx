@@ -20,12 +20,14 @@ export default function SearchBar({ setData, setCurrentWeather }) {
             setData(response.data)
 
             // Current date compared with sunset date (to check for nighttime
-            const currentDate = moment().unix(); //Get the current time in unix format
+            const currentDate = moment().unix(); // Get the current time in unix format
             console.log(currentDate)
+            const sunriseDate = response.data.sys.sunrise; // Get the sunrise time in unix format
+            console.log(sunriseDate) // Get the sunrise time in unix format
             const sunsetDate = response.data.sys.sunset; // Get the sunset time in unix format
             console.log(sunsetDate) // Get the sunset time in unix format
 
-            if (currentDate > sunsetDate) {
+            if (currentDate > sunsetDate || currentDate < sunriseDate) {
                 setCurrentWeather(WeatherImages.night)
             } else {
                 console.log(response.data) // USE AN IF STATEMENT TO CHECK IF ITS NIGHT BY COMPARING THE UNIX STAMP OF THE SUNSET PROPERTY AND THE CURRENT TIME
@@ -109,7 +111,11 @@ export default function SearchBar({ setData, setCurrentWeather }) {
     }
 
     function handleSearchClick() {
-        searchLocation()
+        if (location) {
+            searchLocation()
+        } else {
+            alert('Please enter a city name')
+        } // Check if the location is not empty before calling the searchLocation function
     }
 
     return (

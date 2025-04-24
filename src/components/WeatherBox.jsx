@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import { useState, useRef, useEffect } from 'react'
 import { IconImages } from '../Images'
 import SearchBar from './SeachBar'
@@ -9,6 +10,7 @@ import { WeatherImages } from '../Images'
 
 export default function WeatherBox() {
     const [data, setData] = useState({})
+    const [locationDate, setLocationDate] = useState(null)
     const [currentWeather, setCurrentWeather] = useState(IconImages.defaultIcon)
     const humidityLottieRef = useRef(null) // Set the ref for the humidity animation
     const windLottieRef = useRef(null) // Set the ref for the wind animation
@@ -129,6 +131,23 @@ export default function WeatherBox() {
         }
     }, [data.wind])
 
+    useEffect(() => {
+        if (data.dt && data.timezone !== undefined) {
+            const initialUnixTime = data.dt + data.timezone; // Get the initial unix timestamp and timezone offset
+            setLocationDate(initialUnixTime); // Set the initial unix time
+
+            // Update the time every second
+            const interval = setInterval(() => {
+                setLocationDate((prevUnixTime) => prevUnixTime + 1);
+            }, 1000);
+            
+            return () => clearInterval(interval); // Clear the interval on component unmount
+        }
+    }, [data.dt, data.timezone]);
+
+    // Format the time for display
+    const formattedTime = locationDate ? moment.unix(locationDate).utc().format('HH:mm:ss') : 'Loading...'; 
+
     return (
         <div className="h-auto w-10/12 bp:w-8/12 ap:w-4/12 p-4 bg-white rounded-3xl flex flex-col items-center">
             <Header />
@@ -142,8 +161,9 @@ export default function WeatherBox() {
                 </div> :
                 <>
                     <div className='flex items-center flex-col font-neonTilt text-slate-600 my-auto'>
-                        <span>
+                        <span className='justify-center text-center'>
                             <h3 className='text-2xl md:text-3xl bp:text-5xl ap:text-2xl UWQ:text-5xl'>{data.name}</h3>
+                            <p>Currently the time in {data.name} is: <span className='text-violet-700'>{formattedTime}</span></p>
                         </span>
                         <div className="relative w-40 md:w-40 bp:w-72 ap:w-48 UWQ:w-72 h-auto">
                             {data.main ? (
@@ -153,7 +173,7 @@ export default function WeatherBox() {
                             ) : null}
                             <Lottie animationData={currentWeather} />
                         </div>
-                        {data.weather ? <p className='uppercase text-md md:text-2xl bp:text-4xl ap:text-md'>{data.weather[0].description}</p> : null}
+                        {data.weather ? <p className='uppercase text-md md:text-2xl ap:text-md'>{data.weather[0].description}</p> : null}
                     </div>
                     <div className='flex flex-row font-neonTilt text-violet-700 pb-4 items-center justify-evenly w-full m-auto'>
                         <div className='w-1/4 flex flex-col items-center align-center text-center'>

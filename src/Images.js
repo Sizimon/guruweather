@@ -9,7 +9,7 @@ import storm from './assets/storm.json';
 import snow from './assets/snowy.json';
 import fog from './assets/fog.json';
 import sunClouds from './assets/sunny-with-clouds.json';
-import nightTime from './assets/NightTime.json'
+import nightTime from './assets/night.json'
 
 const WeatherImages = {
     sunny: sun,
