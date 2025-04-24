@@ -7,7 +7,7 @@ import moment from 'moment'
 
 export default function SearchBar({ setData, setCurrentWeather }) {
     const [location, setLocation] = useState('')
-    const apiKey = "REACT_APP_WEATHER_API_KEY_PLACEHOLDER" //  CHANGE THIS TO THE API KEY WITHOUT COMMITTING TO RUN IN LOCAL FOR TESTING
+    const apiKey = "REACT_APP_WEATHER_API_KEY_PLACEHOLDER" // CHANGE THIS TO THE API KEY WITHOUT COMMITTING TO RUN IN LOCAL FOR TESTING
 
     if (!apiKey) {
         console.error('Please provide a valid API key')
@@ -115,7 +115,7 @@ export default function SearchBar({ setData, setCurrentWeather }) {
     return (
         <form className='flex flex-col items-center self-start w-full'>
             <div className="flex w-full flex-row items-center justify-evenly md:justify-center md:gap-4 my-4">
-                <input className="text-violet-700 font-neonTilt h-8 md:h-12 lg:h-8 w-3/4 md:w-1/2 pl-2 outline-none bg-white rounded-3xl border border-violet-700 text-md md:text-lg transition ease-in-out"
+                <input className="text-violet-700 font-neonTilt h-8 md:h-12 bp:h-16 ap:h-8 UWQ:h-16 w-3/4 md:w-1/2 pl-2 outline-none bg-white rounded-3xl border-[3px] border-violet-700 text-md md:text-lg bp:text-2xl ap:text-lg UWQ:text-3xl transition ease-in-out"
                     value={location}
                     onChange={e => setLocation(e.target.value)}
                     onKeyDown={(e) => {
@@ -125,10 +125,11 @@ export default function SearchBar({ setData, setCurrentWeather }) {
                         }
                     }}
                     type="text"
-                    placeholder="Search for city" />
+                    placeholder="Search for city" 
+                />
                 <span className='w-6 md:w-8 transition ease-in-out delay-50 hover:scale-125 duration-300'>
                     <FaMagnifyingGlass
-                        className='cursor-pointer text-violet-700 text-2xl'
+                        className='cursor-pointer text-violet-700 text-2xl bp:text-3xl ap:text-2xl UWQ:text-4xl'
                         onClick={handleSearchClick}
                     />
                 </span>
