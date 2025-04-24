@@ -10,8 +10,9 @@ export default function WeatherBox() {
     const [data, setData] = useState({})
     const [currentWeather, setCurrentWeather] = useState(IconImages.defaultIcon)
     const humidityLottieRef = useRef(null) // Set the ref for the humidity animation
+    const windLottieRef = useRef(null) // Set the ref for the wind animation
 
-    // Render the animation for the set ref
+    // Render the animation for the humidity ref
     useEffect(() => {
         let lottieInstance = null;
         if (data.main && data.main.humidity !== undefined) {
@@ -40,7 +41,7 @@ export default function WeatherBox() {
                     console.log(totalFrames);
 
                     // Calculate the frame range based on humidity
-                    const framesPerRange = totalFrames / 10; // Frames per 5% range
+                    const framesPerRange = totalFrames / 10; // Frames per 10% range
                     const startFrame = Math.floor((Math.floor(humidity / 10)) * framesPerRange);
                     const endFrame = Math.min(startFrame + framesPerRange, totalFrames);
 
@@ -76,6 +77,53 @@ export default function WeatherBox() {
         }
     }, [data.main?.humidity])
 
+    useEffect(() => {
+        let lottieInstanceWind = null;
+        if (data.wind && data.wind.speed) {
+            const windSpeed = data.wind.speed;
+            if (windLottieRef.current) {
+                if (lottieInstanceWind) {
+                    lottieInstanceWind.destroy();
+                    lottieInstanceWind = null;
+                }
+
+                windLottieRef.current.innerHTML = '';
+
+                lottieInstanceWind = lottieWeb.loadAnimation({
+                    container: windLottieRef.current, // Wind DOM element
+                    renderer: 'svg',
+                    loop: true,
+                    autoplay: false,
+                    animationData: IconImages.windIcon,
+                })
+
+                lottieInstanceWind.addEventListener('DOMLoaded', () => {
+                    if (windSpeed < 1) {
+                        lottieInstanceWind.setSpeed(0.05);
+                        lottieInstanceWind.playSegments([0, 100], true);
+
+                    } else if (windSpeed > 1 && windSpeed < 3) {
+                        lottieInstanceWind.setSpeed(0.25);
+                        lottieInstanceWind.playSegments([0, 100], true); 
+                    } else if (windSpeed > 3 && windSpeed < 8) {
+                        lottieInstanceWind.setSpeed(0.5);
+                        lottieInstanceWind.playSegments([0, 100], true); 
+                    }
+                    else if (windSpeed > 8 && windSpeed < 15) {
+                        lottieInstanceWind.setSpeed(1);
+                        lottieInstanceWind.playSegments([0, 100], true); 
+                    } else if (windSpeed > 15 && windSpeed < 25) {
+                        lottieInstanceWind.setSpeed(2);
+                        lottieInstanceWind.playSegments([0, 100], true); 
+                    } else if (windSpeed > 25) {
+                        lottieInstanceWind.setSpeed(3);
+                        lottieInstanceWind.playSegments([0, 100], true); 
+                    }
+                });
+            }
+        }
+    }, [data.wind])
+
     return (
         <>
             <SearchBar setData={setData} setCurrentWeather={setCurrentWeather} />
@@ -107,13 +155,6 @@ export default function WeatherBox() {
                                 ref={humidityLottieRef}
                                 className="w-12 md:w-20 lg:w-12"
                             />
-                            {/* <Lottie 
-                                lottieRef={humidityLottieRef}
-                                animationData={IconImages.humidityIcon} 
-                                className='w-12 md:w-20 lg:w-12'
-                                loop={false}
-                                autoplay={false} 
-                            /> */}
                             {data.main ? (
                                 <p className='text-sm md:text-2xl lg:text-sm'>
                                     Humidity: {data.main.humidity}%
@@ -121,8 +162,15 @@ export default function WeatherBox() {
                             ) : null}
                         </div>
                         <div className='w-1/4 flex flex-col items-center align-center text-center'>
-                            <Lottie animationData={IconImages.windIcon} className='w-12 md:w-20 lg:w-12' />
-                            {data.wind ? <p className='text-sm md:text-2xl lg:text-sm'>Wind: {data.wind.speed}m/s</p> : null}
+                            <div
+                                ref={windLottieRef}
+                                className='w-12 md:w-20 lg:w-12'
+                            />
+                            {data.wind ? (
+                                <p className='text-sm md:text-2xl lg:text-sm'>
+                                    Wind: {Math.round(data.wind.speed)} m/s
+                                </p>
+                            ) : null}
                         </div>
                     </div>
                 </>}

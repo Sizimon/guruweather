@@ -7,7 +7,7 @@ import moment from 'moment'
 
 export default function SearchBar({ setData, setCurrentWeather }) {
     const [location, setLocation] = useState('')
-    const apiKey = "7683ded6248c0502c9151613001a04c3" // "REACT_APP_WEATHER_API_KEY_PLACEHOLDER"  CHANGE THIS TO THE API KEY WITHOUT COMMITTING TO RUN IN LOCAL FOR TESTING
+    const apiKey = "REACT_APP_WEATHER_API_KEY_PLACEHOLDER" //  CHANGE THIS TO THE API KEY WITHOUT COMMITTING TO RUN IN LOCAL FOR TESTING
 
     if (!apiKey) {
         console.error('Please provide a valid API key')
@@ -20,9 +20,9 @@ export default function SearchBar({ setData, setCurrentWeather }) {
             setData(response.data)
 
             // Current date compared with sunset date (to check for nighttime
-            const currentDate = moment().unix() // Get the current time in unix format
+            const currentDate = moment().unix(); //Get the current time in unix format
             console.log(currentDate)
-            const sunsetDate = response.data.sys.sunset // Get the sunset time in unix format
+            const sunsetDate = response.data.sys.sunset; // Get the sunset time in unix format
             console.log(sunsetDate) // Get the sunset time in unix format
 
             if (currentDate > sunsetDate) {
