@@ -6,7 +6,6 @@ import SearchBar from './SeachBar'
 import Header from './Header'
 import Lottie from 'lottie-react' // Importing Lottie for basic animation features
 import lottieWeb from 'lottie-web' // Needed to access the lottie-web instance for advanced features
-import { WeatherImages } from '../Images'
 
 export default function WeatherBox() {
     const [data, setData] = useState({})
