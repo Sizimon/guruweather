@@ -168,7 +168,7 @@ export default function WeatherBox() {
                         <div className="relative w-40 md:w-40 bp:w-72 ap:w-48 UWQ:w-72 h-auto">
                             {data.main ? (
                                 <h3 className="absolute inset-0 flex items-center justify-center text-2xl md:text-4xl ap:text-2xl UWQ:text-4xl text-violet-700 z-10 opacity-85">
-                                    {Math.round(data.main.temp)}°C
+                                    {Math.round(data.main.temp)}°
                                 </h3>
                             ) : null}
                             <Lottie animationData={currentWeather} />
