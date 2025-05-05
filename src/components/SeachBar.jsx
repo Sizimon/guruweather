@@ -16,16 +16,15 @@ export default function SearchBar({ setData, setCurrentWeather }) {
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}&units=metric`
 
     const searchLocation = () => {
-        axios.get(url).then((response) => {
+        axios.get(url)
+        .then((response) => {
             setData(response.data)
 
             // Current date compared with sunset date (to check for nighttime
             const currentDate = moment().unix(); // Get the current time in unix format
-            console.log(currentDate)
             const sunriseDate = response.data.sys.sunrise; // Get the sunrise time in unix format
-            console.log(sunriseDate) // Get the sunrise time in unix format
             const sunsetDate = response.data.sys.sunset; // Get the sunset time in unix format
-            console.log(sunsetDate) // Get the sunset time in unix format
+            
 
             if (currentDate > sunsetDate || currentDate < sunriseDate) {
                 setCurrentWeather(WeatherImages.night)
@@ -105,6 +104,15 @@ export default function SearchBar({ setData, setCurrentWeather }) {
                         setCurrentWeather(IconImages.defaultIcon)
                         break
                 }
+            }
+        })
+        .catch((error) => {
+            if (error.response && error.response.status === 404) {
+                console.error('Location not found:', error.response.data.message)
+                alert('We do not have data for this location. Please try again.');
+            } else {
+                console.error('An error occurred:', error.message);
+                alert('An error occurred while fetching the weather data. Please try again later.');
             }
         })
         setLocation('')
