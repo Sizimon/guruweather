@@ -2,7 +2,7 @@
   "name": "react-weather-api",
   "version": "0.1.0",
   "private": true,
-  "homepage": "/weather-app",
+  "homepage": "/guruweather",
   "dependencies": {
     "@tsparticles/all": "^3.3.0",
     "@tsparticles/react": "^3.0.0",
