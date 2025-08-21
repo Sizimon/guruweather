@@ -1,9 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import moment from 'moment'
-import { useState, useRef, useEffect } from 'react'
 import { IconImages } from '../Images'
 import SearchBar from './SeachBar'
-import Header from './Header'
 import Lottie from 'lottie-react' // Importing Lottie for basic animation features
 import lottieWeb from 'lottie-web' // Needed to access the lottie-web instance for advanced features
 
@@ -148,33 +146,32 @@ export default function WeatherBox() {
     const formattedTime = locationDate ? moment.unix(locationDate).utc().format('HH:mm:ss') : 'Loading...'; 
 
     return (
-        <div className="h-auto w-10/12 bp:w-8/12 ap:w-4/12 p-4 bg-white rounded-3xl flex flex-col items-center">
-            <Header />
+        <div className="h-auto w-10/12 bp:w-8/12 ap:w-4/12 p-4 bg-black/10 border-white/20 border-[1px] backdrop-blur-sm rounded-3xl flex flex-col items-center">
+            {/* <Header /> */}
             <SearchBar setData={setData} setCurrentWeather={setCurrentWeather} />
             {currentWeather === IconImages.defaultIcon ?
-                <div className='flex items-center flex-col font-neonTilt text-slate-600 m-auto'>
+                <div className='flex items-center flex-col font-neonTilt text-white m-auto'>
                     <span className='w-40 md:w-40 bp:w-72 ap:w-48 UWQ:w-72 h-auto my-auto'>
                         <Lottie animationData={currentWeather} />
                     </span>
-                    <p className='uppercase text-base md:text-2xl bp:text-4xl ap:text-xl UWQ:text-4xl text-center'>Use the searchbar to check your desired location</p>
                 </div> :
                 <>
-                    <div className='flex items-center flex-col font-neonTilt text-slate-600 my-auto'>
+                    <div className='flex items-center flex-col font-neonTilt text-white my-auto'>
                         <span className='justify-center text-center'>
                             <h3 className='text-2xl md:text-3xl bp:text-5xl ap:text-2xl UWQ:text-5xl'>{data.name}</h3>
-                            <p>Currently the time in {data.name} is: <span className='text-violet-700'>{formattedTime}</span></p>
+                            <span className='text-white'>{formattedTime}</span>
                         </span>
                         <div className="relative w-40 md:w-40 bp:w-72 ap:w-48 UWQ:w-72 h-auto">
+                            <Lottie animationData={currentWeather} />
                             {data.main ? (
-                                <h3 className="absolute inset-0 flex items-center justify-center text-2xl md:text-4xl ap:text-2xl UWQ:text-4xl text-violet-700 z-10 opacity-85">
+                                <h3 className="flex items-end justify-center text-2xl md:text-4xl ap:text-4xl UWQ:text-4xl text-white z-10">
                                     {Math.round(data.main.temp)}°
                                 </h3>
                             ) : null}
-                            <Lottie animationData={currentWeather} />
                         </div>
                         {data.weather ? <p className='uppercase text-md md:text-2xl ap:text-md'>{data.weather[0].description}</p> : null}
                     </div>
-                    <div className='flex flex-row font-neonTilt text-violet-700 pb-4 items-center justify-evenly w-full m-auto'>
+                    <div className='flex flex-row font-neonTilt text-white pb-4 items-center justify-evenly w-full m-auto'>
                         <div className='w-1/4 flex flex-col items-center align-center text-center'>
                             <div
                                 ref={humidityLottieRef}

@@ -5,7 +5,6 @@ import { loadSlim } from "@tsparticles/slim";
 
 
 const ParticleBackground = (props) => {
-
   const [init, setInit] = useState(false);
   useEffect(() => {
     initParticlesEngine(async (engine) => {
@@ -25,7 +24,7 @@ const ParticleBackground = (props) => {
       autoPlay: true,
       background: {
         color: {
-          value: "#7d0d8c"
+          value: "#0B1026"
         },
         image: "",
         position: "",

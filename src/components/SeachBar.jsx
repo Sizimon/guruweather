@@ -129,7 +129,7 @@ export default function SearchBar({ setData, setCurrentWeather }) {
     return (
         <form className='flex flex-col items-center self-start w-full'>
             <div className="flex w-full flex-row items-center justify-evenly md:justify-center md:gap-4 my-4">
-                <input className="text-violet-700 font-neonTilt h-8 md:h-12 bp:h-16 ap:h-8 UWQ:h-16 w-3/4 md:w-1/2 pl-2 outline-none bg-white rounded-3xl border-[3px] border-violet-700 text-md md:text-lg bp:text-2xl ap:text-lg UWQ:text-3xl transition ease-in-out"
+                <input className="text-white font-neonTilt h-8 md:h-12 bp:h-16 ap:h-8 UWQ:h-16 w-3/4 md:w-1/2 pl-2 outline-none bg-white/5 rounded-3xl border-[1px] border-white/15 text-md md:text-lg bp:text-2xl ap:text-lg UWQ:text-3xl transition ease-in-out"
                     value={location}
                     onChange={e => setLocation(e.target.value)}
                     onKeyDown={(e) => {
@@ -143,7 +143,7 @@ export default function SearchBar({ setData, setCurrentWeather }) {
                 />
                 <span className='w-6 md:w-8 transition ease-in-out delay-50 hover:scale-125 duration-300'>
                     <FaMagnifyingGlass
-                        className='cursor-pointer text-violet-700 text-2xl bp:text-3xl ap:text-2xl UWQ:text-4xl'
+                        className='cursor-pointer text-white text-2xl bp:text-3xl ap:text-2xl UWQ:text-4xl'
                         onClick={handleSearchClick}
                     />
                 </span>
