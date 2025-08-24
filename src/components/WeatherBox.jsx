@@ -5,10 +5,13 @@ import SearchBar from './SeachBar'
 import Lottie from 'lottie-react' // Importing Lottie for basic animation features
 import lottieWeb from 'lottie-web' // Needed to access the lottie-web instance for advanced features
 
+import gsap from 'gsap'
+
 export default function WeatherBox() {
     const [data, setData] = useState({})
     const [locationDate, setLocationDate] = useState(null)
-    const [currentWeather, setCurrentWeather] = useState(IconImages.defaultIcon)
+    const [currentWeather, setCurrentWeather] = useState(null)
+    const containerRef = useRef(null)
     const humidityLottieRef = useRef(null) // Set the ref for the humidity animation
     const windLottieRef = useRef(null) // Set the ref for the wind animation
 
@@ -128,6 +131,8 @@ export default function WeatherBox() {
         }
     }, [data.wind])
 
+
+    // Get the initial location date and set an interval to update it every second.
     useEffect(() => {
         if (data.dt && data.timezone !== undefined) {
             const initialUnixTime = data.dt + data.timezone; // Get the initial unix timestamp and timezone offset
@@ -137,25 +142,32 @@ export default function WeatherBox() {
             const interval = setInterval(() => {
                 setLocationDate((prevUnixTime) => prevUnixTime + 1);
             }, 1000);
-            
+
             return () => clearInterval(interval); // Clear the interval on component unmount
         }
     }, [data.dt, data.timezone]);
 
+    // If the current weather is not null, animate the weather data into view
+    useEffect(() => {
+        if (currentWeather !== null && containerRef.current) {
+            gsap.fromTo(
+                containerRef.current,
+                { opacity: 0, scale: 0.95, height: 0 },
+                { opacity: 1, scale: 1, height: 'auto', duration: 1, ease: 'power2.out' }
+            )
+        }
+    }, [currentWeather])
+
     // Format the time for display
-    const formattedTime = locationDate ? moment.unix(locationDate).utc().format('HH:mm:ss') : 'Loading...'; 
+    const formattedTime = locationDate ? moment.unix(locationDate).utc().format('HH:mm:ss') : 'Loading...';
 
     return (
         <div className="h-auto w-10/12 bp:w-8/12 ap:w-4/12 p-4 bg-black/10 border-white/20 border-[1px] backdrop-blur-sm rounded-3xl flex flex-col items-center">
-            {/* <Header /> */}
             <SearchBar setData={setData} setCurrentWeather={setCurrentWeather} />
-            {currentWeather === IconImages.defaultIcon ?
-                <div className='flex items-center flex-col font-neonTilt text-white m-auto'>
-                    <span className='w-40 md:w-40 bp:w-72 ap:w-48 UWQ:w-72 h-auto my-auto'>
-                        <Lottie animationData={currentWeather} />
-                    </span>
-                </div> :
-                <>
+            {currentWeather === null ?
+                <div />
+                :
+                <div ref={containerRef}>
                     <div className='flex items-center flex-col font-neonTilt text-white my-auto'>
                         <span className='justify-center text-center'>
                             <h3 className='text-2xl md:text-3xl bp:text-5xl ap:text-2xl UWQ:text-5xl'>{data.name}</h3>
@@ -195,7 +207,7 @@ export default function WeatherBox() {
                             ) : null}
                         </div>
                     </div>
-                </>}
+                </div>}
         </div>
     )
 }

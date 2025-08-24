@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { IconImages } from '../Images'
 import { WeatherImages } from '../Images'
 import { FaMagnifyingGlass } from 'react-icons/fa6'
 import moment from 'moment'
@@ -101,7 +100,7 @@ export default function SearchBar({ setData, setCurrentWeather }) {
                         setCurrentWeather(WeatherImages.foggy)
                         break
                     default:
-                        setCurrentWeather(IconImages.defaultIcon)
+                        setCurrentWeather(null)
                         break
                 }
             }
